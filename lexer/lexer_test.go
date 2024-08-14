@@ -7,23 +7,55 @@ import (
 
 
 func TestNextToken(t *testing.T) {
-	input := "=+-(){}:;,"
+	input := `let five = 5;
+	let ten = 10;
+	
+	let add = fn(x, y) {
+		x + y
+	};
+	
+	let result = add(five, ten);`
 
 	tests := []struct {
-		expectedType token.Tokentype
+		expectedType token.TokenType
 		expectedLiteral string
 	}{
+		{token.LET, "let"},
+		{token.IDENTIFIER, "five"},
 		{token.ASSIGN, "="},
-		{token.PLUS, "+"},
-		{token.MINUS, "-"},
+		{token.INT, "5"},
+		{token.SEMICOLON, ";"},
+		{token.LET, "let"},
+		{token.IDENTIFIER, "ten"},
+		{token.ASSIGN, "="},
+		{token.INT, "10"},
+		{token.SEMICOLON, ";"},
+		{token.LET, "let"},
+		{token.IDENTIFIER, "add"},
+		{token.ASSIGN, "="},
+		{token.FUNCTION, "fn"},
 		{token.LPAREN, "("},
+		{token.IDENTIFIER, "x"},
+		{token.COMMA, ","},
+		{token.IDENTIFIER, "y"},
 		{token.RPAREN, ")"},
 		{token.LBRACE, "{"},
+		{token.IDENTIFIER, "x"},
+		{token.PLUS, "+"},
+		{token.IDENTIFIER, "y"},
 		{token.RBRACE, "}"},
-		{token.COLON, ":"},
 		{token.SEMICOLON, ";"},
+		{token.LET, "let"},
+		{token.IDENTIFIER, "result"},
+		{token.ASSIGN, "="},
+		{token.IDENTIFIER, "add"},
+		{token.LPAREN, "("},
+		{token.IDENTIFIER, "five"},
 		{token.COMMA, ","},
-		{token.EOF, "EOF"},
+		{token.IDENTIFIER, "ten"},
+		{token.RPAREN, ")"},
+		{token.SEMICOLON, ";"},
+		{token.EOF, ""},
 	}
 
 	l := New(input)
@@ -33,7 +65,7 @@ func TestNextToken(t *testing.T) {
 
 		if tok.Type != tt.expectedType {
 			t.Fatalf("test[%d] - literal wrong expected=%q, got=%q",
-		i, tt.expectedLiteral, tok.Literal)
+		i, tt.expectedType, tok.Literal)
 		}
 	}
 }

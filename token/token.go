@@ -1,9 +1,9 @@
 package token
 
-type Tokentype string
+type TokenType string
 
 type Token struct {
-	Type Tokentype
+	Type TokenType
 	Literal string
 }
 
@@ -12,7 +12,7 @@ const (
 	EOF = "EOF" // "End  of File"の略 ファイルの終端
 
 	//識別子
-	IDENT = "IDENT"
+	IDENTIFIER = "IDENTIFIER"
 	INT = "INT"
 
 	//演算子
@@ -33,3 +33,17 @@ const (
 	FUNCTION = "FUNCTION"
 	LET = "LET"
 )
+
+// 予約語定義
+var keywords = map[string]TokenType {
+	"fn": FUNCTION,
+	"let": LET,
+}
+
+// 予約語かどうか判定
+func LookupIdentifier(identifier string) TokenType {
+	if tok, ok := keywords[identifier]; ok {
+		return tok
+	}
+	return IDENTIFIER
+}

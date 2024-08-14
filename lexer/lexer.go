@@ -30,38 +30,87 @@ func (lex *Lexer) readChar() {
 	lex.readPosition += 1
 }
 
-func NewToken(tokenType token.Tokentype, ch byte) token.Token{
+func newToken(tokenType token.TokenType, ch byte) token.Token{
 	return token.Token{Type: tokenType, Literal: string(ch)}
+}
+
+// 英字かどうか識別
+func isLetter(ch byte) bool {
+	return 'a' <= ch && ch <= 'z' || 'A' <= ch && ch <= 'Z' || ch == '_' || ch == '-'
+}
+
+// 数字かどうか判定
+func isDisit(ch byte) bool{
+	return '0' <= ch && ch <= '9'
+}
+
+func (lex *Lexer) readNumber() string{
+	position := lex.position
+	for isDisit(lex.ch) {
+		lex.readChar()
+	}
+	return lex.input[position:lex.position]
+}
+
+// 空白、改行、タブを読み飛ばす
+func  (lex *Lexer) skipWhiteSpace() {
+	for lex.ch == ' ' || lex.ch == '\t' || lex.ch == '\n' || lex.ch == '\r' {
+	lex.readChar()	
+	}
+}
+
+func (lex *Lexer) readIdentifer() string{
+	position := lex.position
+	for isLetter(lex.ch) {
+		lex.readChar()
+	}
+	return lex.input[position:lex.position]
 }
 
 
 func (lex *Lexer) NextToken() token.Token{
 	var tok token.Token
 
+	lex.skipWhiteSpace()
+
 	switch lex.ch {
 	case '=':
-		tok = NewToken(token.ASSIGN, lex.ch)
+		tok = newToken(token.ASSIGN, lex.ch)
 	case '+':
-		tok = NewToken(token.PLUS, lex.ch)
+		tok = newToken(token.PLUS, lex.ch)
 	case '-':
-		tok = NewToken(token.MINUS, lex.ch)
+		tok = newToken(token.MINUS, lex.ch)
 	case ',':
-		tok = NewToken(token.COMMA, lex.ch)
+		tok = newToken(token.COMMA, lex.ch)
 	case ':':
-		tok = NewToken(token.COLON, lex.ch)
+		tok = newToken(token.COLON, lex.ch)
 	case ';':
-		tok = NewToken(token.SEMICOLON, lex.ch)
+		tok = newToken(token.SEMICOLON, lex.ch)
 	case '(':
-		tok = NewToken(token.LPAREN, lex.ch)
+		tok = newToken(token.LPAREN, lex.ch)
 	case ')':
-		tok = NewToken(token.RPAREN, lex.ch)
+		tok = newToken(token.RPAREN, lex.ch)
 	case '{':
-		tok = NewToken(token.LBRACE, lex.ch)
+		tok = newToken(token.LBRACE, lex.ch)
 	case '}':
-		tok = NewToken(token.RBRACE, lex.ch)
+		tok = newToken(token.RBRACE, lex.ch)
 	case 0:
 		tok.Literal = ""
 		tok.Type = token.EOF
+
+	default:
+		// 英字かどうか判定
+		if isLetter(lex.ch) {
+			tok.Literal = lex.readIdentifer()
+			tok.Type = token.LookupIdentifier(tok.Literal)
+			return tok
+		}else if isDisit(lex.ch) {
+			tok.Type = token.INT
+			tok.Literal = lex.readNumber()
+			return tok
+		}else {
+			tok = newToken(token.UNDEF, lex.ch)
+		}
 	}
 
 	lex.readChar()
