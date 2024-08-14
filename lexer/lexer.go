@@ -1,4 +1,7 @@
 package lexer
+/*
+lexer 字句解析機
+*/
 
 import (
 	"Shroom/token"
