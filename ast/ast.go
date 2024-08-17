@@ -42,19 +42,19 @@ type LetStatement struct {
 	Value Expression
 }
 
-func (lstm *LetStatement) statementNode() {}
+func (lstmt *LetStatement) statementNode() {}
 
-func (lstm *LetStatement) TokenLiteral() string{
-	return lstm.Token.Literal
+func (lstmt *LetStatement) TokenLiteral() string{
+	return lstmt.Token.Literal
 }
 
 type Identifier struct{
 	Token token.Token // token.IDENTIFIER トークン
-	value string
+	Value string
 }
 
-func (iden *Identifier) expressionNode() {}
+func (identifier *Identifier) expressionNode() {}
 
-func (iden *Identifier) TokenLiteral() string{
-	return iden.Token.Literal
+func (identifier *Identifier) TokenLiteral() string{
+	return identifier.Token.Literal
 }
