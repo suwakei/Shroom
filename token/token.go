@@ -40,6 +40,7 @@ const (
 	//キーワード
 	FUNCTION = "FUNCTION"
 	LET = "LET"
+	CONST = "CONST"
 	TRUE = "TRUE"
 	FALSE = "FALSE"
 	IF = "IF"
@@ -54,6 +55,7 @@ const (
 var keywords = map[string]TokenType {
 	"fn": FUNCTION,
 	"let": LET,
+	"const": CONST,
 	"true": TRUE,
 	"false": FALSE,
 	"if": IF,

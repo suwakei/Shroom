@@ -8,7 +8,7 @@ import (
 )
 
 type Lexer struct {
-	input string
+	input string //入力
 	position int // 入力における現在位置(現在の位置を示す)
 	readPosition int // これから読み込む位置(現在の次の文字)
 	ch byte // 現在検査中の文字 
