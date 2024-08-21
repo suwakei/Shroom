@@ -5,20 +5,35 @@ import (
 	"Shroom/lexer"
 	"Shroom/token"
 	"fmt"
+	"strconv"
 )
+
+
 
 type Parser struct {
 	lex *lexer.Lexer // 字句解析機インスタンスへのポインタ
 	currentToken token.Token // 現在のトークン
 	peekToken token.Token //次のトークン
 	errors []string
+
+	prefixParseFns map[token.TokenType]prefixParseFunc
+	infixParseFns map[token.TokenType]infixParseFunc
 }
+
+
+func (parser *Parser) parseIdentifier() ast.Expression {
+	return &ast.Identifier{Token: parser.currentToken, Value: parser.currentToken.Literal}
+}
+
 
 func New (lex *lexer.Lexer) *Parser {
 	parser := &Parser{
 		lex: lex,
 		errors: []string{},
 	}
+
+	parser.prefixParseFns = make(map[token.TokenType]prefixParseFunc)
+	parser.registerPrefix(token.IDENTIFIER, parser.parseIdentifier)
 	// 2つトークンを読み込んでcurrentTokenとpeekTokenの2つがセットされる
 	parser.nextToken()
 	parser.nextToken()
@@ -78,12 +93,69 @@ func (parser *Parser) expectPeek(t token.TokenType) bool {
 	}
 }
 
+func (parser *Parser) parseReturnStatement() *ast.ReturnStatement {
+	stmt := &ast.ReturnStatement{Token: parser.currentToken}
+
+	parser.nextToken()
+
+	// FIXME: セミコロンに遭遇するまで式を読み飛ばしてしまっている
+	for !parser.currentTokenIs(token.SEMICOLON) {
+		parser.nextToken()
+	}
+
+	return stmt
+}
+
+// 各識別子の優先順位
+// iotaの部分が0であとから続く定数には1~7の数字が割り当てられている
+const (
+	_ int = iota
+	LOWEST
+	EQUALS // ==
+	LESSGREATER // > or <
+	SUM // +
+	PRODUCT // *
+	PREFIX // -x or !x
+	CALL // myfunction()
+)
+
+
+func (parser *Parser) parseExpression(precedence int) ast.Expression {
+	// parser.currentToken.Typeの前置に関連付けられた構文解析関数があるか確認
+	// あれば構文解析関数の結果を返すなければnil
+	prefix := parser.prefixParseFns[parser.currentToken.Type]
+	if prefix == nil {
+		return nil
+	}
+	leftExp := prefix()
+
+	return leftExp
+}
+
+
+
+
+func (parser *Parser) parseExpressionStatement() *ast.ExpressionStatement {
+	stmt := &ast.ExpressionStatement{Token: parser.currentToken}
+
+	stmt.Expression = parser.parseExpression(LOWEST)
+
+	if parser.peekTokenIs(token.SEMICOLON) {
+		parser.nextToken()
+	}
+
+	return stmt
+}
+
+
 func (parser *Parser) parseStatement() ast.Statement {
 	switch parser.currentToken.Type {
 	case token.LET:
 		return parser.parseLetStatement()
+	case token.RETURN:
+		return parser.parseReturnStatement()
 	default:
-		return nil
+		return parser.parseExpressionStatement()
 	}
 }
 
@@ -99,4 +171,31 @@ func (parser *Parser) ParseProgram() *ast.Program {
 		parser.nextToken()
 	}
 	return program
+}
+
+
+type (
+	prefixParseFunc func() ast.Expression // 前置構文解析関数 (++iなど)
+	infixParseFunc func(ast.Expression) ast.Expression // 中置構文解析関数 (a + b) + c の()にあたるところ
+)
+
+
+// prefixParseFuncマップにエントリを追加する
+func (parser *Parser) registerPrefix(tokenType token.TokenType, fn prefixParseFunc) {
+	parser.prefixParseFns[tokenType] = fn
+}
+
+// infixParseFuncにエントリを追加する
+func (parser *Parser) registerInfix(tokenType token.TokenType, fn infixParseFunc) {
+	parser.infixParseFns[tokenType] = fn
+}
+
+
+func (parser *Parser) parseIntegerLiteral() ast.Expression {
+	lit := &ast.IntegerLiteral{Token: parser.currentToken}
+
+	value, err := strconv.ParseInt(parser.currentToken.Literal, 0, 64)
+	if err != nil {
+		msg := fmt.Sprintf("could not parse %q as integer", parser.currentToken.Literal)
+	}
 }
