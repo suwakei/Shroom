@@ -34,11 +34,30 @@ func New (lex *lexer.Lexer) *Parser {
 
 	parser.prefixParseFns = make(map[token.TokenType]prefixParseFunc)
 	parser.registerPrefix(token.IDENTIFIER, parser.parseIdentifier)
+	parser.registerPrefix(token.INT, parser.parseIntegerLiteral)
+
+	parser.registerPrefix(token.BANG, parser.parsePrefixExpression)
+	parser.registerPrefix(token.MINUS, parser.parsePrefixExpression)
 	// 2つトークンを読み込んでcurrentTokenとpeekTokenの2つがセットされる
 	parser.nextToken()
 	parser.nextToken()
 	return parser
 }
+
+
+func (parser *Parser) parsePrefixExpression() ast.Expression {
+	expression := &ast.PrefixExpression{
+		Token: parser.currentToken,
+		Operator: parser.currentToken.Literal,
+	}
+
+	parser.nextToken()
+
+	expression.Right = parser.parseExpression(PREFIX)
+
+	return expression
+}
+
 
 func (parser *Parser) Errors() []string {
 	return parser.errors
@@ -120,11 +139,18 @@ const (
 )
 
 
+func (parser *Parser) noPrefixParseFnError(tok token.TokenType) {
+	msg := fmt.Sprintf("no prefix parse function for %s found", tok)
+	parser.errors = append(parser.errors, msg)
+}
+
+
 func (parser *Parser) parseExpression(precedence int) ast.Expression {
 	// parser.currentToken.Typeの前置に関連付けられた構文解析関数があるか確認
-	// あれば構文解析関数の結果を返すなければnil
+	// あれば構文解析関数の結果を返す なければnil
 	prefix := parser.prefixParseFns[parser.currentToken.Type]
 	if prefix == nil {
+		parser.noPrefixParseFnError(parser.currentToken.Type)
 		return nil
 	}
 	leftExp := prefix()
@@ -197,5 +223,11 @@ func (parser *Parser) parseIntegerLiteral() ast.Expression {
 	value, err := strconv.ParseInt(parser.currentToken.Literal, 0, 64)
 	if err != nil {
 		msg := fmt.Sprintf("could not parse %q as integer", parser.currentToken.Literal)
+		parser.errors = append(parser.errors, msg)
+		return nil
 	}
+
+	lit.Value = value
+
+	return lit
 }
