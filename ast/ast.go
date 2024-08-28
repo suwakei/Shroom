@@ -38,32 +38,6 @@ func (p *Program) TokenLiteral() string{
 	}
 }
 
-type LetStatement struct {
-	Token token.Token // token.LET トークン
-	Name *Identifier
-	Value Expression
-}
-
-
-func (lstmt *LetStatement) statementNode() {}
-
-func (lstmt *LetStatement) TokenLiteral() string{
-	return lstmt.Token.Literal
-}
-
-
-type ReturnStatement struct {
-	Token token.Token // returnトークン
-	ReturnValue Expression
-}
-
-
-func (rstmt *ReturnStatement) statementNode() {}
-
-func (rstmt *ReturnStatement) TokenLiteral() string {
-	return rstmt.Token.Literal
-}
-
 
 type ExpressionStatement struct {
 	Token token.Token // 式の最初のトークン
@@ -100,34 +74,6 @@ func (program *Program) String() string {
 }
 
 
-func (lstmt *LetStatement) String() string {
-	var out bytes.Buffer
-
-	out.WriteString(lstmt.TokenLiteral() + " ")
-	out.WriteString(lstmt.Name.String())
-	out.WriteString(" = ")
-
-	if lstmt.Value != nil {
-		out.WriteString(lstmt.Value.String())
-	}
-
-	out.WriteString(";")
-
-	return out.String()
-}
-
-
-func (rstmt *ReturnStatement) String() string {
-	var out bytes.Buffer
-
-	out.WriteString(rstmt.TokenLiteral() + " ")
-
-	if rstmt.ReturnValue != nil {
-		out.WriteString(rstmt.ReturnValue.String())
-	}
-
-	return out.String()
-}
 
 
 func (estmt *ExpressionStatement) String() string {
@@ -169,6 +115,28 @@ func (pe *PrefixExpression) String() string {
 	out.WriteString("(")
 	out.WriteString(pe.Operator)
 	out.WriteString(pe.Right.String())
+	out.WriteString(")")
+
+	return out.String()
+}
+
+
+type InfixExpression struct {
+	Token token.Token // 演算子トークン例えば +
+	Left Expression
+	Operator string
+	Right Expression
+}
+
+func (ie *InfixExpression) expressionNode() {}
+func (ie *InfixExpression) TokenLiteral() string {return ie.Token.Literal}
+func (ie *InfixExpression) String() string {
+	var out bytes.Buffer
+
+	out.WriteString("(")
+	out.WriteString(ie.Left.String())
+	out.WriteString(" " + ie.Operator + " ")
+	out.WriteString(ie.Right.String())
 	out.WriteString(")")
 
 	return out.String()

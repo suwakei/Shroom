@@ -38,10 +38,40 @@ func New (lex *lexer.Lexer) *Parser {
 
 	parser.registerPrefix(token.BANG, parser.parsePrefixExpression)
 	parser.registerPrefix(token.MINUS, parser.parsePrefixExpression)
+
+	// 中置構文解析関数を中置演算子に登録する
+	// 中置演算子はparser.parseInfixExpressionに関連付けられる
+	parser.infixParseFns = make(map[token.TokenType]infixParseFunc)
+	parser.registerInfix(token.PLUS, parser.parseInfixExpression)
+	parser.registerInfix(token.MINUS, parser.parseInfixExpression)
+	parser.registerInfix(token.SLASH, parser.parseInfixExpression)
+	parser.registerInfix(token.ASTARISK, parser.parseInfixExpression)
+	parser.registerInfix(token.EQUAL, parser.parseInfixExpression)
+	parser.registerInfix(token.NOT_EQUAL, parser.parseInfixExpression)
+	parser.registerInfix(token.LT, parser.parseInfixExpression)
+	parser.registerInfix(token.GT, parser.parseInfixExpression)
+
+
+
 	// 2つトークンを読み込んでcurrentTokenとpeekTokenの2つがセットされる
 	parser.nextToken()
 	parser.nextToken()
 	return parser
+}
+
+
+func (parser *Parser) parseInfixExpression(left ast.Expression) ast.Expression {
+	expression := &ast.InfixExpression{
+		Token: parser.currentToken,
+		Operator: parser.currentToken.Literal,
+		Left: left,
+	}
+
+	precedence := parser.currentPrecedence()
+	parser.nextToken()
+	expression.Right = parser.parseExpression(precedence)
+
+	return expression
 }
 
 
@@ -155,6 +185,17 @@ func (parser *Parser) parseExpression(precedence int) ast.Expression {
 	}
 	leftExp := prefix()
 
+	for !parser.peekTokenIs(token.SEMICOLON) && precedence < parser.peekPrecedence() {
+		infix := parser.infixParseFns[parser.peekToken.Type]
+		if infix == nil {
+			return leftExp
+		}
+
+		parser.nextToken()
+
+		leftExp = infix(leftExp)
+	}
+
 	return leftExp
 }
 
@@ -231,3 +272,34 @@ func (parser *Parser) parseIntegerLiteral() ast.Expression {
 
 	return lit
 }
+
+// これが優先順位テーブルとなる
+var precedences = map[token.TokenType]int{
+	token.EQUAL: EQUALS,
+	token.NOT_EQUAL: EQUALS,
+	token.LT: LESSGREATER,
+	token.GT: LESSGREATER,
+	token.PLUS: SUM,
+	token.MINUS: SUM,
+	token.SLASH: PRODUCT,
+	token.ASTARISK: PRODUCT,
+}
+
+
+func (parser *Parser) peekPrecedence() int {
+	if parser, ok := precedences[parser.peekToken.Type]; ok {
+		return parser
+	}
+
+	return LOWEST
+}
+
+func (parser *Parser) currentPrecedence() int {
+	if parser, ok := precedences[parser.currentToken.Type]; ok {
+		return parser
+	}
+
+	return LOWEST
+}
+
+
