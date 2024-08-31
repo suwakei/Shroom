@@ -22,7 +22,7 @@ func Start(in io.Reader, out io.Writer) {
 		if !scanned {
 			return
 		}
-		
+
 		line := scanner.Text()
 		// exitコマンドでreplの終了
 		if line == "exit" {

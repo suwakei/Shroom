@@ -1,10 +1,9 @@
 package lexer
 
 import (
-	"testing"
 	"Shroom/token"
+	"testing"
 )
-
 
 func TestNextToken(t *testing.T) {
 	input := `let five = 5;
@@ -26,7 +25,7 @@ func TestNextToken(t *testing.T) {
 	10 != 9;`
 
 	tests := []struct {
-		expectedType token.TokenType
+		expectedType    token.TokenType
 		expectedLiteral string
 	}{
 		{token.LET, "let"},
@@ -106,12 +105,12 @@ func TestNextToken(t *testing.T) {
 
 	l := New(input)
 
-	for i, tt := range tests{
+	for i, tt := range tests {
 		tok := l.NextToken()
 
 		if tok.Type != tt.expectedType {
 			t.Fatalf("test[%d] - literal wrong expected=%q, got=%q",
-		i, tt.expectedType, tok.Literal)
+				i, tt.expectedType, tok.Literal)
 		}
 	}
 }

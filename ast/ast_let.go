@@ -7,17 +7,15 @@ import (
 
 type LetStatement struct {
 	Token token.Token // token.LET トークン
-	Name *Identifier
+	Name  *Identifier
 	Value Expression
 }
 
-
 func (lstmt *LetStatement) statementNode() {}
 
-func (lstmt *LetStatement) TokenLiteral() string{
+func (lstmt *LetStatement) TokenLiteral() string {
 	return lstmt.Token.Literal
 }
-
 
 func (lstmt *LetStatement) String() string {
 	var out bytes.Buffer

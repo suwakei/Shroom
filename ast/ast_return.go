@@ -5,19 +5,16 @@ import (
 	"bytes"
 )
 
-
 type ReturnStatement struct {
-	Token token.Token // returnトークン
+	Token       token.Token // returnトークン
 	ReturnValue Expression
 }
-
 
 func (rstmt *ReturnStatement) statementNode() {}
 
 func (rstmt *ReturnStatement) TokenLiteral() string {
 	return rstmt.Token.Literal
 }
-
 
 func (rstmt *ReturnStatement) String() string {
 	var out bytes.Buffer
@@ -32,5 +29,3 @@ func (rstmt *ReturnStatement) String() string {
 
 	return out.String()
 }
-
-
