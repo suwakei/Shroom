@@ -33,6 +33,8 @@ func New(lex *lexer.Lexer) *Parser {
 	parser.registerPrefix(token.TRUE, parser.parseBoolean)
 	parser.registerPrefix(token.FALSE, parser.parseBoolean)
 
+	parser.registerPrefix(token.LPAREN, parser.parseGroupExpression)
+
 	// 中置構文解析関数を中置演算子に登録する
 	// 中置演算子はparser.parseInfixExpressionに関連付けられる
 	parser.infixParseFns = make(map[token.TokenType]infixParseFunc)
@@ -50,6 +52,19 @@ func New(lex *lexer.Lexer) *Parser {
 	parser.nextToken()
 	return parser
 }
+
+func (parser *Parser) parseGroupExpression() ast.Expression {
+	parser.nextToken()
+
+	exp := parser.parseExpression(LOWEST)
+
+	if !parser.expectPeek(token.RPAREN) {
+		return nil
+	}
+
+	return exp
+}
+
 
 func (parser *Parser) Errors() []string {
 	return parser.errors
