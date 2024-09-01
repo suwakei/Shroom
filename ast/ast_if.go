@@ -13,7 +13,7 @@ type IfExpression struct {
 	Alternative *BlockStatement
 }
 
-func (ife *IfExpression) expressNode() {}
+func (ife *IfExpression) expressionNode() {}
 func (ife *IfExpression) TokenLiteral() string {return ife.Token.Literal}
 func (ife *IfExpression) String() string {
 	var out bytes.Buffer

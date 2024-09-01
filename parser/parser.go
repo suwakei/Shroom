@@ -35,6 +35,8 @@ func New(lex *lexer.Lexer) *Parser {
 
 	parser.registerPrefix(token.LPAREN, parser.parseGroupExpression)
 
+	parser.registerPrefix(token.IF, parser.parseIfExpression)
+
 	// 中置構文解析関数を中置演算子に登録する
 	// 中置演算子はparser.parseInfixExpressionに関連付けられる
 	parser.infixParseFns = make(map[token.TokenType]infixParseFunc)
