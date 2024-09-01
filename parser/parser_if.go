@@ -8,7 +8,7 @@ import (
 func (parser *Parser) parseIfExpression() ast.Expression {
 	expression := &ast.IfExpression{Token: parser.currentToken}
 
-	if !parse.expectPeek(token.LPAREN) {
+	if !parser.expectPeek(token.LPAREN) {
 		return nil
 	}
 
@@ -25,5 +25,19 @@ func (parser *Parser) parseIfExpression() ast.Expression {
 
 	expression.Consequence = parser.parseBlockStatement()
 
+	// elseは省略できるのでelseがなくてもエラーにしない
+	if parser.peekTokenIs(token.ELSE) {
+		parser.nextToken()
+
+		if !parser.expectPeek(token.LBRACE) {
+			return nil
+		}
+
+		expression.Alternative = parser.parseBlockStatement()
+	}
+
 	return expression
 }
+
+// fn <parameters> <block statement>
+// <parameter one> <two> <three>

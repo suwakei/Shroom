@@ -37,6 +37,8 @@ func New(lex *lexer.Lexer) *Parser {
 
 	parser.registerPrefix(token.IF, parser.parseIfExpression)
 
+	parser.registerPrefix(token.FUNCTION, parser.parseFunctionLiteral)
+
 	// 中置構文解析関数を中置演算子に登録する
 	// 中置演算子はparser.parseInfixExpressionに関連付けられる
 	parser.infixParseFns = make(map[token.TokenType]infixParseFunc)
@@ -192,6 +194,7 @@ var precedences = map[token.TokenType]int{
 	token.ASTARISK:  PRODUCT,
 }
 
+
 func (parser *Parser) peekPrecedence() int {
 	if parser, ok := precedences[parser.peekToken.Type]; ok {
 		return parser
@@ -211,3 +214,5 @@ func (parser *Parser) currentPrecedence() int {
 func (parser *Parser) parseBoolean() ast.Expression {
 	return &ast.Boolean{Token: parser.currentToken, Value: parser.currentTokenIs(token.TRUE)}
 }
+
+
