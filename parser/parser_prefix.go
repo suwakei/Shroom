@@ -25,7 +25,7 @@ func (parser *Parser) noPrefixParseFnError(tok token.TokenType) {
 }
 
 
-// prefixParseFuncマップにエントリを追加する
+// prefixParseFnマップにエントリを追加する
 func (parser *Parser) registerPrefix(tokenType token.TokenType, fn prefixParseFn) {
 	parser.prefixParseFns[tokenType] = fn
 }

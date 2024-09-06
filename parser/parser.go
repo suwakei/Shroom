@@ -39,7 +39,6 @@ func New(lex *lexer.Lexer) *Parser {
 	parser.registerPrefix(token.FALSE, parser.parseBoolean)
 
 	parser.registerPrefix(token.LPAREN, parser.parseGroupExpression)
-
 	parser.registerPrefix(token.IF, parser.parseIfExpression)
 
 	parser.registerPrefix(token.FUNCTION, parser.parseFunctionLiteral)
@@ -49,12 +48,16 @@ func New(lex *lexer.Lexer) *Parser {
 	parser.infixParseFns = make(map[token.TokenType]infixParseFn)
 	parser.registerInfix(token.PLUS, parser.parseInfixExpression)
 	parser.registerInfix(token.MINUS, parser.parseInfixExpression)
+
 	parser.registerInfix(token.SLASH, parser.parseInfixExpression)
 	parser.registerInfix(token.ASTARISK, parser.parseInfixExpression)
+
 	parser.registerInfix(token.EQUAL, parser.parseInfixExpression)
 	parser.registerInfix(token.NOT_EQUAL, parser.parseInfixExpression)
+
 	parser.registerInfix(token.LT, parser.parseInfixExpression)
 	parser.registerInfix(token.GT, parser.parseInfixExpression)
+
 	parser.registerInfix(token.LPAREN, parser.parseCallExpression)
 
 	// 2つトークンを読み込んでcurrentTokenとpeekTokenの2つがセットされる

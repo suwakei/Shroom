@@ -20,7 +20,7 @@ func (parser *Parser) parseInfixExpression(left ast.Expression) ast.Expression {
 }
 
 
-// infixParseFuncにエントリを追加する
+// infixParseFnにエントリを追加する
 func (parser *Parser) registerInfix(tokenType token.TokenType, fn infixParseFn) {
 	parser.infixParseFns[tokenType] = fn
 }
