@@ -3,6 +3,7 @@ package repl
 import (
 	"Shroom/lexer"
 	"Shroom/token"
+	"Shroom/parser"
 	"bufio"
 	"fmt"
 	"io"
@@ -30,9 +31,26 @@ func Start(in io.Reader, out io.Writer) {
 			os.Exit(0)
 		}
 		lex := lexer.New(line)
+		parser := parser.New(lex)
+
+		program := parser.ParseProgram()
+		if len(parser.Errors()) != 0 {
+			printParserErrors(out, parser.Errors())
+			continue
+		}
+
+		io.WriteString(out, program.String())
+		io.WriteString(out, "\n")
 
 		for tok := lex.NextToken(); tok.Type != token.EOF; tok = lex.NextToken() {
 			fmt.Printf("%+v\n", tok)
 		}
 	}
+}
+
+
+func printParserErrors(out io.Writer, errors []string) {
+	for _, msg := range errors {
+		io.WriteString(out, "\t" + msg + "\n")
+	} 
 }

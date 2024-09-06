@@ -13,9 +13,14 @@ type Parser struct {
 	peekToken    token.Token  //次のトークン
 	errors       []string
 
-	prefixParseFns map[token.TokenType]prefixParseFunc
-	infixParseFns  map[token.TokenType]infixParseFunc
+	prefixParseFns map[token.TokenType]prefixParseFn
+	infixParseFns  map[token.TokenType]infixParseFn
 }
+
+type (
+	prefixParseFn func() ast.Expression               // 前置構文解析関数 (++iなど)
+	infixParseFn  func(ast.Expression) ast.Expression // 中置構文解析関数 (a + b) + c の()にあたるところ
+)
 
 func New(lex *lexer.Lexer) *Parser {
 	parser := &Parser{
@@ -23,7 +28,7 @@ func New(lex *lexer.Lexer) *Parser {
 		errors: []string{},
 	}
 
-	parser.prefixParseFns = make(map[token.TokenType]prefixParseFunc)
+	parser.prefixParseFns = make(map[token.TokenType]prefixParseFn)
 	parser.registerPrefix(token.IDENTIFIER, parser.parseIdentifier)
 	parser.registerPrefix(token.INT, parser.parseIntegerLiteral)
 
@@ -39,11 +44,9 @@ func New(lex *lexer.Lexer) *Parser {
 
 	parser.registerPrefix(token.FUNCTION, parser.parseFunctionLiteral)
 
-	parser.registerInfix(token.LPAREN, parser.parseCallExpression)
-
 	// 中置構文解析関数を中置演算子に登録する
 	// 中置演算子はparser.parseInfixExpressionに関連付けられる
-	parser.infixParseFns = make(map[token.TokenType]infixParseFunc)
+	parser.infixParseFns = make(map[token.TokenType]infixParseFn)
 	parser.registerInfix(token.PLUS, parser.parseInfixExpression)
 	parser.registerInfix(token.MINUS, parser.parseInfixExpression)
 	parser.registerInfix(token.SLASH, parser.parseInfixExpression)
@@ -52,6 +55,7 @@ func New(lex *lexer.Lexer) *Parser {
 	parser.registerInfix(token.NOT_EQUAL, parser.parseInfixExpression)
 	parser.registerInfix(token.LT, parser.parseInfixExpression)
 	parser.registerInfix(token.GT, parser.parseInfixExpression)
+	parser.registerInfix(token.LPAREN, parser.parseCallExpression)
 
 	// 2つトークンを読み込んでcurrentTokenとpeekTokenの2つがセットされる
 	parser.nextToken()
@@ -70,7 +74,6 @@ func (parser *Parser) parseGroupExpression() ast.Expression {
 
 	return exp
 }
-
 
 func (parser *Parser) Errors() []string {
 	return parser.errors
@@ -179,11 +182,6 @@ func (parser *Parser) ParseProgram() *ast.Program {
 	return program
 }
 
-type (
-	prefixParseFunc func() ast.Expression               // 前置構文解析関数 (++iなど)
-	infixParseFunc  func(ast.Expression) ast.Expression // 中置構文解析関数 (a + b) + c の()にあたるところ
-)
-
 // これが優先順位テーブルとなる
 var precedences = map[token.TokenType]int{
 	token.EQUAL:     EQUALS,
@@ -194,8 +192,8 @@ var precedences = map[token.TokenType]int{
 	token.MINUS:     SUM,
 	token.SLASH:     PRODUCT,
 	token.ASTARISK:  PRODUCT,
+	token.LPAREN:    CALL,
 }
-
 
 func (parser *Parser) peekPrecedence() int {
 	if parser, ok := precedences[parser.peekToken.Type]; ok {
@@ -216,5 +214,3 @@ func (parser *Parser) currentPrecedence() int {
 func (parser *Parser) parseBoolean() ast.Expression {
 	return &ast.Boolean{Token: parser.currentToken, Value: parser.currentTokenIs(token.TRUE)}
 }
-
-

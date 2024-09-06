@@ -14,6 +14,6 @@ func main() {
 		panic(user)
 	}
 	fmt.Printf("Hello!! %s! This is repl of programming langage Shroom!!\n", user.Username)
-	fmt.Printf("Press any commands!\n")
+	fmt.Printf("Type any commands!\n")
 	repl.Start(os.Stdin, os.Stdout)
 }

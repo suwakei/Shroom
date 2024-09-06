@@ -10,8 +10,14 @@ func (parser *Parser) parseReturnStatement() *ast.ReturnStatement {
 
 	parser.nextToken()
 
-	// FIXME: セミコロンに遭遇するまで式を読み飛ばしてしまっている
-	for !parser.currentTokenIs(token.SEMICOLON) {
+	stmt.ReturnValue = parser.parseExpression(LOWEST)
+
+	// // FIXME: セミコロンに遭遇するまで式を読み飛ばしてしまっている
+	// for !parser.currentTokenIs(token.SEMICOLON) {
+	// 	parser.nextToken()
+	// }
+
+	if parser.peekTokenIs(token.SEMICOLON) {
 		parser.nextToken()
 	}
 

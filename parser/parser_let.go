@@ -17,10 +17,18 @@ func (parser *Parser) parseLetStatement() *ast.LetStatement {
 		return nil
 	}
 
-	// :FIXME セミコロンに到達するまで式を読み飛ばしている
-	for !parser.currentTokenIs(token.SEMICOLON) {
+	parser.nextToken()
+
+	stmt.Value = parser.parseExpression(LOWEST)
+
+	if parser.peekTokenIs(token.SEMICOLON) {
 		parser.nextToken()
 	}
+
+	// // :FIXME セミコロンに到達するまで式を読み飛ばしている
+	// for !parser.currentTokenIs(token.SEMICOLON) {
+	// 	parser.nextToken()
+	// }
 
 	return stmt
 }
