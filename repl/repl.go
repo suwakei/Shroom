@@ -4,6 +4,7 @@ import (
 	"Shroom/lexer"
 	"Shroom/token"
 	"Shroom/parser"
+	"Shroom/eval"
 	"bufio"
 	"fmt"
 	"io"
@@ -26,7 +27,7 @@ func Start(in io.Reader, out io.Writer) {
 
 		line := scanner.Text()
 		// exitコマンドでreplの終了
-		if line == "exit" {
+		if line == "exit()" {
 			fmt.Print("bye bye!")
 			os.Exit(0)
 		}
@@ -39,8 +40,17 @@ func Start(in io.Reader, out io.Writer) {
 			continue
 		}
 
+		evaluated := eval.Eval(program)
+		if evaluated != nil {
+			io.WriteString(out, evaluated.Inspect())
+			io.WriteString(out, "\n")
+		}else {
+		// FIXME: 数値が入力されたときこのiowiterも機能して同じ数字が2つ出力される 
 		io.WriteString(out, program.String())
 		io.WriteString(out, "\n")
+		}
+
+
 
 		for tok := lex.NextToken(); tok.Type != token.EOF; tok = lex.NextToken() {
 			fmt.Printf("%+v\n", tok)
