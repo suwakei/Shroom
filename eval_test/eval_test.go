@@ -1,9 +1,10 @@
-package eval
+package eval_test
 
 import (
 	"Shroom/lexer"
 	"Shroom/object"
 	"Shroom/parser"
+	"Shroom/eval"
 	"testing"
 )
 
@@ -42,7 +43,7 @@ func testEval(input string) object.Object {
 	program := p.ParseProgram()
 	env := object.NewEnvironment()
 
-	return Eval(program, env)
+	return eval.Eval(program, env)
 }
 
 func testIntegerObject(t *testing.T, obj object.Object, expected int64) bool {
@@ -153,7 +154,7 @@ func TestIfElseExpression(t *testing.T) {
 
 
 func testNullObject(t *testing.T, obj object.Object) bool {
-	if obj != NULL {
+	if obj != eval.NULL {
 	t.Errorf("object is not Null. got=%T(%+v)", obj, obj)
 	return false
 	}
