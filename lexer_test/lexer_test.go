@@ -2,6 +2,7 @@ package lexer
 
 import (
 	"Shroom/token"
+	"Shroom/lexer"
 	"testing"
 )
 
@@ -107,7 +108,7 @@ func TestNextToken(t *testing.T) {
 		{token.EOF, ""},
 	}
 
-	l := New(input)
+	l := lexer.New(input)
 
 	for i, tt := range tests {
 		tok := l.NextToken()
