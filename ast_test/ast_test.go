@@ -1,20 +1,21 @@
 package ast
 
 import (
+	"Shroom/ast"
 	"Shroom/token"
 	"testing"
 )
 
 func TestString(t *testing.T) {
-	program := &Program{
-		Statements: []Statement{
-			&LetStatement{
+	program := &ast.Program{
+		Statements: []ast.Statement{
+			&ast.LetStatement{
 				Token: token.Token{Type: token.LET, Literal: "let"},
-				Name: &Identifier{
+				Name: &ast.Identifier{
 					Token: token.Token{Type: token.IDENTIFIER, Literal: "myVar"},
 					Value: "myVar",
 				},
-				Value: &Identifier{
+				Value: &ast.Identifier{
 					Token: token.Token{Type: token.IDENTIFIER, Literal: "anotherVar"},
 					Value: "anotherVar",
 				},

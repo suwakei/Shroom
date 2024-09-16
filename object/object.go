@@ -35,7 +35,7 @@ func (integer *Integer) Type() ObjectType {return INTEGER_OBJ}
 func (integer *Integer) Inspect() string {return fmt.Sprintf("%d", integer.Value)}
 
 
-
+// object.String型
 type String struct {
 	Value string
 }
