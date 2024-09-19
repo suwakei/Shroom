@@ -3,6 +3,7 @@ package eval
 import (
 	"Shroom/ast"
 	"Shroom/object"
+	"reflect"
 	"fmt"
 )
 
@@ -85,6 +86,9 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 		}
 
 		return applyFunction(function, args)
+
+	case *ast.StringLiteral:
+		return &object.String{Value: node.Value}
 	}
 
 	return nil
@@ -255,11 +259,46 @@ left, right object.Object) object.Object {
 
 	case operator == "!=":
 		return nativeBooltoBooleanObject(left != right)
+
+	case left.Type() == object.STRING_OBJ && right.Type() == object.STRING_OBJ:
+		return evalStringInfixExpression(operator, left, right)
 	
 	default:
 		return newError("unknown operator: %s %s %s", left.Type(), operator, right.Type())
 	}
 }
+
+
+func evalStringInfixExpression(operator string, left, right object.Object) object.Object {
+	// if operator != "+" {
+	// 	return newError("unknown operator: %s %s %s", left.Type(), operator, right.Type())
+	// }
+
+	leftVal := left.(*object.String).Value
+	rightVal := right.(*object.String).Value
+	switch operator {
+	case "+":
+		return &object.String{Value: leftVal + rightVal}
+
+	case ">":
+		return nativeBooltoBooleanObject(len(leftVal) > len(rightVal))
+
+	case "<":
+		return nativeBooltoBooleanObject(len(leftVal) < len(rightVal))
+
+		//上手く機能していないので直す
+	case "==":
+		l := object.String{Value: leftVal}
+		r := object.String{Value: rightVal}
+		return nativeBooltoBooleanObject(reflect.DeepEqual(l, r))
+
+	default:
+		return newError("unknown operator: %s %s %s", left.Type(), operator, right.Type())
+
+	}
+	
+}
+
 
 func evalIntegerInfixExpression(operator string,
 left, right object.Object) object.Object {
