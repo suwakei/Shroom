@@ -6,7 +6,7 @@ import (
 )
 
 type InfixExpression struct {
-	Token    token.Token // 演算子トークン例えば +
+	Token    token.Token // +などの演算子トークン
 	Left     Expression
 	Operator string
 	Right    Expression
