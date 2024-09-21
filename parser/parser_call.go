@@ -7,7 +7,7 @@ import (
 
 func (parser *Parser) parseCallExpression(function ast.Expression) ast.Expression {
 	exp := &ast.CallExpression{Token: parser.currentToken, Function: function}
-	exp.Arguments = parser.parseCallArguments()
+	exp.Arguments = parser.parseExpressionList(token.RPAREN)
 	return exp
 }
 
