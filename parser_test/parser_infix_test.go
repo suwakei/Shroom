@@ -67,7 +67,6 @@ func TestParsingInfixExpression(t *testing.T) {
 	}
 }
 
-
 func testInfixExpression(
 	t *testing.T,
 	exp ast.Expression,

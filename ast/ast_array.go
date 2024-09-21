@@ -7,12 +7,12 @@ import (
 )
 
 type ArrayLiteral struct {
-	Token token.Token
+	Token    token.Token
 	Elements []Expression
 }
 
-func (al *ArrayLiteral) expressionNode() {}
-func (al *ArrayLiteral) TokenLiteral() string {return al.Token.Literal}
+func (al *ArrayLiteral) expressionNode()      {}
+func (al *ArrayLiteral) TokenLiteral() string { return al.Token.Literal }
 func (al *ArrayLiteral) String() string {
 	var out bytes.Buffer
 

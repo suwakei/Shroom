@@ -5,7 +5,6 @@ import (
 	"testing"
 )
 
-
 func TestStringLiteral(t *testing.T) {
 	input := `"Hello World!"`
 
@@ -19,8 +18,6 @@ func TestStringLiteral(t *testing.T) {
 		t.Errorf("String has wrong value. got=%q", str.Value)
 	}
 }
-
-
 
 func TestStringConcatenation(t *testing.T) {
 	input := `"Hello" + " " + "World!"`

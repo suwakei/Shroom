@@ -4,8 +4,8 @@ import (
 	"Shroom/ast"
 	"Shroom/lexer"
 	"Shroom/parser"
-	"testing"
 	"fmt"
+	"testing"
 )
 
 func TestIntegerLiteralExpression(t *testing.T) {
@@ -35,7 +35,6 @@ func TestIntegerLiteralExpression(t *testing.T) {
 		t.Errorf("literal.TokenLiteral not %s. got=%s", "5", literal.TokenLiteral())
 	}
 }
-
 
 func testIntegerLiteral(t *testing.T, il ast.Expression, value int64) bool {
 	integer, ok := il.(*ast.IntegerLiteral)

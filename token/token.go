@@ -14,7 +14,7 @@ const (
 	//識別子
 	IDENTIFIER = "IDENTIFIER"
 	INT        = "INT"
-	STRING = "STRING"
+	STRING     = "STRING"
 
 	//演算子
 	ASSIGN    = "="
@@ -36,8 +36,8 @@ const (
 	RPAREN    = ")"
 	LBRACE    = "{"
 	RBRACE    = "}"
-	RBRACKET = "["
-	LBRACKET = "]"
+	RBRACKET  = "["
+	LBRACKET  = "]"
 
 	//キーワード
 	FUNCTION = "FUNCTION"

@@ -21,7 +21,6 @@ func checkParserErrors(t *testing.T, parser *parser.Parser) {
 	t.FailNow()
 }
 
-
 func testLiteralExpression(
 	t *testing.T,
 	exp ast.Expression,

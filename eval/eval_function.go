@@ -4,8 +4,6 @@ import (
 	"Shroom/object"
 )
 
-
-
 func applyFunction(fn object.Object, args []object.Object) object.Object {
 	switch fn := fn.(type) {
 

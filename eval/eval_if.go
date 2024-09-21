@@ -5,9 +5,6 @@ import (
 	"Shroom/object"
 )
 
-
-
-
 func evalIfExpression(ie *ast.IfExpression, env *object.Environment) object.Object {
 	condition := Eval(ie.Condition, env)
 	if isError(condition) {

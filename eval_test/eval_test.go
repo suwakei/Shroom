@@ -1,15 +1,12 @@
 package eval_test
 
 import (
+	"Shroom/eval"
 	"Shroom/lexer"
 	"Shroom/object"
 	"Shroom/parser"
-	"Shroom/eval"
 	"testing"
 )
-
-
-
 
 func testEval(input string) object.Object {
 	l := lexer.New(input)
@@ -20,11 +17,10 @@ func testEval(input string) object.Object {
 	return eval.Eval(program, env)
 }
 
-
 // Bang == !
 func TestBangOperator(t *testing.T) {
-	tests := []struct{
-		input string
+	tests := []struct {
+		input    string
 		expected bool
 	}{
 		{"!true", false},
@@ -41,13 +37,10 @@ func TestBangOperator(t *testing.T) {
 	}
 }
 
-
-
-
 func testNullObject(t *testing.T, obj object.Object) bool {
 	if obj != eval.NULL {
-	t.Errorf("object is not Null. got=%T(%+v)", obj, obj)
-	return false
+		t.Errorf("object is not Null. got=%T(%+v)", obj, obj)
+		return false
 	}
 	return true
 }

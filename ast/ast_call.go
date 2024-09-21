@@ -10,13 +10,13 @@ import (
 // <expression>(<commma separated expressions>)
 
 type CallExpression struct {
-	Token token.Token // "(" トークン
-	Function Expression // Identifier か FunctionLiteral
+	Token     token.Token // "(" トークン
+	Function  Expression  // Identifier か FunctionLiteral
 	Arguments []Expression
 }
 
-func (ce *CallExpression) expressionNode() {}
-func (ce *CallExpression) TokenLiteral() string {return ce.Token.Literal}
+func (ce *CallExpression) expressionNode()      {}
+func (ce *CallExpression) TokenLiteral() string { return ce.Token.Literal }
 func (ce *CallExpression) String() string {
 	var out bytes.Buffer
 
@@ -32,4 +32,3 @@ func (ce *CallExpression) String() string {
 
 	return out.String()
 }
-

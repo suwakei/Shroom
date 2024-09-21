@@ -7,7 +7,6 @@ import (
 	"testing"
 )
 
-
 func TestReturnStatements(t *testing.T) {
 	input := `
 	return 5;

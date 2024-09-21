@@ -91,9 +91,6 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 	return nil
 }
 
-
-
-
 func evalExpression(exps []ast.Expression, env *object.Environment) []object.Object {
 	var result []object.Object
 
@@ -106,8 +103,6 @@ func evalExpression(exps []ast.Expression, env *object.Environment) []object.Obj
 	}
 	return result
 }
-
-
 
 func evalProgram(program *ast.Program, env *object.Environment) object.Object {
 	var result object.Object
@@ -129,8 +124,6 @@ func evalProgram(program *ast.Program, env *object.Environment) object.Object {
 	}
 	return result
 }
-
-
 
 func isTruThy(obj object.Object) bool {
 	switch obj {
@@ -155,8 +148,6 @@ func nativeBooltoBooleanObject(input bool) *object.Boolean {
 	return FALSE
 }
 
-
-
 func evalBangOperatorExpression(right object.Object) object.Object {
 	switch right {
 	case TRUE:
@@ -172,8 +163,6 @@ func evalBangOperatorExpression(right object.Object) object.Object {
 		return FALSE
 	}
 }
-
-
 
 func evalStatements(stmts []ast.Statement, env *object.Environment) object.Object {
 	var result object.Object

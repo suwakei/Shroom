@@ -1,21 +1,21 @@
 package object
 
 import (
-	"fmt"
-	"bytes"
 	"Shroom/ast"
+	"bytes"
+	"fmt"
 	"strings"
 )
 
 const (
-	INTEGER_OBJ = "INTEGER"
-	STRING_OBJ = "STRING"
-	BOOLEAN_OBJ = "BOOLEAN"
+	INTEGER_OBJ      = "INTEGER"
+	STRING_OBJ       = "STRING"
+	BOOLEAN_OBJ      = "BOOLEAN"
 	RETURN_VALUE_OBJ = "RETURN_VALUE"
-	NULL_OBJ = "NULL"
-	ERROR_OBJ = "ERROR"
-	FUNCTION_OBJ = "FUNCTION"
-	BUILTIN_OBJ = "BUILTIN"
+	NULL_OBJ         = "NULL"
+	ERROR_OBJ        = "ERROR"
+	FUNCTION_OBJ     = "FUNCTION"
+	BUILTIN_OBJ      = "BUILTIN"
 )
 
 type ObjectType string
@@ -25,64 +25,58 @@ type Object interface {
 	Inspect() string
 }
 
-
 // object.Integer型
 type Integer struct {
 	Value int64
 }
 
-func (integer *Integer) Type() ObjectType {return INTEGER_OBJ}
-func (integer *Integer) Inspect() string {return fmt.Sprintf("%d", integer.Value)}
-
+func (integer *Integer) Type() ObjectType { return INTEGER_OBJ }
+func (integer *Integer) Inspect() string  { return fmt.Sprintf("%d", integer.Value) }
 
 // object.String型
 type String struct {
 	Value string
 }
 
-func (str *String) Type() ObjectType {return STRING_OBJ}
-func (str *String) Inspect() string {return str.Value}
-
+func (str *String) Type() ObjectType { return STRING_OBJ }
+func (str *String) Inspect() string  { return str.Value }
 
 // object.Boolean型
 type Boolean struct {
 	Value bool
 }
 
-func (boolean *Boolean) Type() ObjectType {return BOOLEAN_OBJ}
-func (boolean *Boolean) Inspect() string {return fmt.Sprintf("%t", boolean.Value)}
-
+func (boolean *Boolean) Type() ObjectType { return BOOLEAN_OBJ }
+func (boolean *Boolean) Inspect() string  { return fmt.Sprintf("%t", boolean.Value) }
 
 // null型
-type Null struct {}
+type Null struct{}
 
-func (n *Null) Type() ObjectType {return NULL_OBJ}
-func (n *Null) Inspect() string {return "null"}
-
+func (n *Null) Type() ObjectType { return NULL_OBJ }
+func (n *Null) Inspect() string  { return "null" }
 
 type ReturnValue struct {
 	Value Object
 }
 
-func (rv *ReturnValue) Type() ObjectType {return RETURN_VALUE_OBJ}
-func (rv *ReturnValue) Inspect() string {return rv.Value.Inspect()}
+func (rv *ReturnValue) Type() ObjectType { return RETURN_VALUE_OBJ }
+func (rv *ReturnValue) Inspect() string  { return rv.Value.Inspect() }
 
 // error型
 type Error struct {
 	Message string
 }
 
-func (e *Error) Type() ObjectType {return ERROR_OBJ}
-func (e *Error) Inspect() string {return "ERROR: " + e.Message}
-
+func (e *Error) Type() ObjectType { return ERROR_OBJ }
+func (e *Error) Inspect() string  { return "ERROR: " + e.Message }
 
 type Function struct {
 	Parameters []*ast.Identifier
-	Body *ast.BlockStatement
-	Env *Environment
+	Body       *ast.BlockStatement
+	Env        *Environment
 }
 
-func (f *Function) Type() ObjectType {return FUNCTION_OBJ}
+func (f *Function) Type() ObjectType { return FUNCTION_OBJ }
 func (f *Function) Inspect() string {
 	var out bytes.Buffer
 
@@ -101,12 +95,11 @@ func (f *Function) Inspect() string {
 	return out.String()
 }
 
-
 type BuiltinFunction func(args ...Object) Object
 
 type Builtin struct {
 	Fn BuiltinFunction
 }
 
-func (b *Builtin) Type() ObjectType {return BUILTIN_OBJ}
-func (b *Builtin) Inspect() string {return "builtin function"}
+func (b *Builtin) Type() ObjectType { return BUILTIN_OBJ }
+func (b *Builtin) Inspect() string  { return "builtin function" }

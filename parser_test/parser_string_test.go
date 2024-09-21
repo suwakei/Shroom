@@ -7,7 +7,6 @@ import (
 	"testing"
 )
 
-
 func TestStringLiteralExpression(t *testing.T) {
 	input := `Hello World;`
 
