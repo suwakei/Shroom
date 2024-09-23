@@ -16,6 +16,7 @@ const (
 	ERROR_OBJ        = "ERROR"
 	FUNCTION_OBJ     = "FUNCTION"
 	BUILTIN_OBJ      = "BUILTIN"
+	ARRAY_OBJ        = "ARRAY"
 )
 
 type ObjectType string
@@ -70,6 +71,7 @@ type Error struct {
 func (e *Error) Type() ObjectType { return ERROR_OBJ }
 func (e *Error) Inspect() string  { return "ERROR: " + e.Message }
 
+// function型
 type Function struct {
 	Parameters []*ast.Identifier
 	Body       *ast.BlockStatement
@@ -95,6 +97,8 @@ func (f *Function) Inspect() string {
 	return out.String()
 }
 
+// 組み込み関数型
+// 戻り値がある組み込み関数の型
 type BuiltinFunction func(args ...Object) Object
 
 type Builtin struct {
@@ -103,3 +107,25 @@ type Builtin struct {
 
 func (b *Builtin) Type() ObjectType { return BUILTIN_OBJ }
 func (b *Builtin) Inspect() string  { return "builtin function" }
+
+
+// 配列型
+type Array struct {
+	Elements []Object
+}
+
+func (arr *Array) Type() ObjectType {return ARRAY_OBJ}
+func (arr *Array) Inspect() string {
+	var out bytes.Buffer
+
+	elements := []string{}
+	for _, elem := range arr.Elements {
+		elements = append(elements, elem.Inspect())
+	}
+
+	out.WriteString("[")
+	out.WriteString(strings.Join(elements, ", "))
+	out.WriteString("]")
+
+	return out.String()
+}

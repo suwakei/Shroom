@@ -80,7 +80,7 @@ func testInfixExpression(
 		return false
 	}
 
-	if !testLiteralExpression(t, opExp, left) {
+	if !testLiteralExpression(t, opExp.Left, left) {
 		return false
 	}
 
