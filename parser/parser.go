@@ -17,6 +17,34 @@ type Parser struct {
 	infixParseFns  map[token.TokenType]infixParseFn
 }
 
+// 各識別子の優先順位
+// iotaの部分が0であとから続く定数には1~の数字が割り当てられている
+const (
+	_ int = iota
+	LOWEST
+	EQUALS      // ==
+	LESSGREATER // > or <
+	SUM         // +
+	PRODUCT     // *
+	PREFIX      // -x or !x
+	CALL        // myfunction()
+	INDEX       // array[index]
+)
+
+// これが優先順位テーブルとなる
+var precedences = map[token.TokenType]int{
+	token.EQUAL:     EQUALS,
+	token.NOT_EQUAL: EQUALS,
+	token.LT:        LESSGREATER,
+	token.GT:        LESSGREATER,
+	token.PLUS:      SUM,
+	token.MINUS:     SUM,
+	token.SLASH:     PRODUCT,
+	token.ASTARISK:  PRODUCT,
+	token.LPAREN:    CALL,
+	token.LBRACKET:  INDEX,
+}
+
 type (
 	prefixParseFn func() ast.Expression               // 前置構文解析関数 (++iなど)
 	infixParseFn  func(ast.Expression) ast.Expression // 中置構文解析関数 (a + b) + c の()にあたるところ
@@ -63,6 +91,8 @@ func New(lex *lexer.Lexer) *Parser {
 	parser.registerPrefix(token.STRING, parser.parseStringLiteral)
 
 	parser.registerPrefix(token.LBRACKET, parser.parseArrayLiteral)
+
+	parser.registerInfix(token.LBRACKET, parser.parseIndexExpression)
 
 	// 2つトークンを読み込んでcurrentTokenとpeekTokenの2つがセットされる
 	parser.nextToken()
@@ -114,19 +144,6 @@ func (parser *Parser) expectPeek(t token.TokenType) bool {
 		return false
 	}
 }
-
-// 各識別子の優先順位
-// iotaの部分が0であとから続く定数には1~7の数字が割り当てられている
-const (
-	_ int = iota
-	LOWEST
-	EQUALS      // ==
-	LESSGREATER // > or <
-	SUM         // +
-	PRODUCT     // *
-	PREFIX      // -x or !x
-	CALL        // myfunction()
-)
 
 func (parser *Parser) parseExpression(precedence int) ast.Expression {
 	// parser.currentToken.Typeの前置に関連付けられた構文解析関数があるか確認
@@ -187,19 +204,6 @@ func (parser *Parser) ParseProgram() *ast.Program {
 		parser.nextToken()
 	}
 	return program
-}
-
-// これが優先順位テーブルとなる
-var precedences = map[token.TokenType]int{
-	token.EQUAL:     EQUALS,
-	token.NOT_EQUAL: EQUALS,
-	token.LT:        LESSGREATER,
-	token.GT:        LESSGREATER,
-	token.PLUS:      SUM,
-	token.MINUS:     SUM,
-	token.SLASH:     PRODUCT,
-	token.ASTARISK:  PRODUCT,
-	token.LPAREN:    CALL,
 }
 
 func (parser *Parser) peekPrecedence() int {

@@ -157,7 +157,6 @@ func (lex *Lexer) NextToken() token.Token {
 	return tok
 }
 
-
 func (lex *Lexer) readString() string {
 	position := lex.position + 1
 	for {

@@ -1,8 +1,8 @@
 package parser
 
 import (
-	"Shroom/token"
 	"Shroom/ast"
+	"Shroom/token"
 )
 
 func (parser *Parser) parseIfExpression() ast.Expression {

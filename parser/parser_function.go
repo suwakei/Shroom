@@ -5,7 +5,6 @@ import (
 	"Shroom/token"
 )
 
-
 func (parser *Parser) parseFunctionParameters() []*ast.Identifier {
 	identifiers := []*ast.Identifier{}
 
@@ -33,11 +32,10 @@ func (parser *Parser) parseFunctionParameters() []*ast.Identifier {
 	return identifiers
 }
 
-
 func (parser *Parser) parseFunctionLiteral() ast.Expression {
 	lit := &ast.FunctionLiteral{Token: parser.currentToken}
 
-	if !parser.expectPeek(token.LPAREN){
+	if !parser.expectPeek(token.LPAREN) {
 		return nil
 	}
 

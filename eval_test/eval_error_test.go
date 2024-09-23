@@ -5,11 +5,9 @@ import (
 	"testing"
 )
 
-
-
 func TestErrorHandling(t *testing.T) {
-	tests := []struct{
-		input string
+	tests := []struct {
+		input           string
 		expectedMessage string
 	}{
 		{

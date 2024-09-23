@@ -67,7 +67,6 @@ func TestParsingInfixExpression(t *testing.T) {
 	}
 }
 
-
 func testInfixExpression(
 	t *testing.T,
 	exp ast.Expression,
@@ -81,7 +80,7 @@ func testInfixExpression(
 		return false
 	}
 
-	if !testLiteralExpression(t, opExp, left) {
+	if !testLiteralExpression(t, opExp.Left, left) {
 		return false
 	}
 

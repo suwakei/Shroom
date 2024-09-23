@@ -7,7 +7,6 @@ import (
 	"testing"
 )
 
-
 func TestFunctionLiteralParsing(t *testing.T) {
 	input := `fn(x, y) {x + y}`
 
@@ -18,7 +17,7 @@ func TestFunctionLiteralParsing(t *testing.T) {
 
 	if len(program.Statements) != 1 {
 		t.Fatalf("program.Statements does not contain %d statements. got=%d\n",
-	1, len(program.Statements))
+			1, len(program.Statements))
 	}
 
 	stmt, ok := program.Statements[0].(*ast.ExpressionStatement)
@@ -40,22 +39,21 @@ func TestFunctionLiteralParsing(t *testing.T) {
 
 	if len(function.Body.Statements) != 1 {
 		t.Fatalf("function.Body.Statements has not 1 statements. got=%d\n",
-	len(function.Body.Statements))
+			len(function.Body.Statements))
 	}
 
 	bodyStmt, ok := function.Body.Statements[0].(*ast.ExpressionStatement)
 	if !ok {
 		t.Fatalf("function body stmt is not ast.ExpressionStatement. got=%T",
-	function.Body.Statements[0])
+			function.Body.Statements[0])
 	}
 
 	testInfixExpression(t, bodyStmt.Expression, "x", "+", "y")
 }
 
-
 func TestFunctionParameterParsing(t *testing.T) {
 	tests := []struct {
-		input string
+		input          string
 		expectedParams []string
 	}{
 		{input: "fn() {};", expectedParams: []string{}},
@@ -74,12 +72,11 @@ func TestFunctionParameterParsing(t *testing.T) {
 
 		if len(function.Parameters) != len(tt.expectedParams) {
 			t.Errorf("length parameters wrong want %d. got=%d\n",
-		len(tt.expectedParams), len(function.Parameters))
+				len(tt.expectedParams), len(function.Parameters))
 		}
 
-		
-	for i, ident := range tt.expectedParams {
-		testLiteralExpression(t, function.Parameters[i], ident)
-	}
+		for i, ident := range tt.expectedParams {
+			testLiteralExpression(t, function.Parameters[i], ident)
+		}
 	}
 }

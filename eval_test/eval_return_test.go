@@ -5,8 +5,8 @@ import (
 )
 
 func TestReturnStatements(t *testing.T) {
-	tests := []struct{
-		input string
+	tests := []struct {
+		input    string
 		expected int64
 	}{
 		{"return 10;", 10},
@@ -21,7 +21,7 @@ func TestReturnStatements(t *testing.T) {
 				}
 				return 1
 			}
-			`,10,
+			`, 10,
 		},
 	}
 

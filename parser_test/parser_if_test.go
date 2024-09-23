@@ -17,7 +17,7 @@ func TestIfExpression(t *testing.T) {
 
 	if len(program.Statements) != 1 {
 		t.Fatalf("program.Statements does not contain %d statements. got=%d\n",
-	1, len(program.Statements))
+			1, len(program.Statements))
 	}
 
 	stmt, ok := program.Statements[0].(*ast.ExpressionStatement)
@@ -30,7 +30,7 @@ func TestIfExpression(t *testing.T) {
 		t.Errorf("stmt.Expression is not ast.IfExpression. got=%T", stmt.Expression)
 	}
 
-	if !testInfixExpression(t ,exp.Condition, "x", "<", "y") {
+	if !testInfixExpression(t, exp.Condition, "x", "<", "y") {
 		return
 	}
 

@@ -1,8 +1,8 @@
 package lexer
 
 import (
-	"Shroom/token"
 	"Shroom/lexer"
+	"Shroom/token"
 	"testing"
 )
 

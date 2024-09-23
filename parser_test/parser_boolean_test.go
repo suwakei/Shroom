@@ -2,10 +2,9 @@ package parser_test
 
 import (
 	"Shroom/ast"
-	"testing"
 	"fmt"
+	"testing"
 )
-
 
 func testBooleanLiteral(t *testing.T, exp ast.Expression, value bool) bool {
 	boolean, ok := exp.(*ast.Boolean)

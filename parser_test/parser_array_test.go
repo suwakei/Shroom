@@ -8,7 +8,7 @@ import (
 )
 
 func TestParsingArrayLiterals(t *testing.T) {
-	input := "[1, 2 + 2, 3 + 3]"
+	input := "[1, 2 * 2, 3 + 3]"
 
 	l := lexer.New(input)
 	p := parser.New(l)

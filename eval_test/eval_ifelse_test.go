@@ -1,16 +1,14 @@
 package eval_test
 
-
 import (
 	"testing"
 )
 
-
 func TestIfElseExpression(t *testing.T) {
-	tests := []struct{
-		input string
+	tests := []struct {
+		input    string
 		expected interface{}
-		}{
+	}{
 		{"if (true) {10}", 10},
 		{"if (false) {10}", nil},
 		{"if (1) {100}", 100},
@@ -25,7 +23,7 @@ func TestIfElseExpression(t *testing.T) {
 		integer, ok := tt.expected.(int)
 		if ok {
 			testIntegerObject(t, evaluated, int64(integer))
-		}else {
+		} else {
 			testNullObject(t, evaluated)
 		}
 	}

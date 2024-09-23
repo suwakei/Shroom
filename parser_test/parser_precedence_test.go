@@ -6,7 +6,6 @@ import (
 	"testing"
 )
 
-
 func TestOperatorPrecedenceParseing(t *testing.T) {
 	tests := []struct {
 		input    string
@@ -45,7 +44,7 @@ func TestOperatorPrecedenceParseing(t *testing.T) {
 			"(((a + (b * c)) + (d / e)) - f)",
 		},
 		{
-			"3 + 4; - * 5",
+			"3 + 4; -5 * 5",
 			"(3 + 4)((-5) * 5)",
 		},
 		{
@@ -58,7 +57,7 @@ func TestOperatorPrecedenceParseing(t *testing.T) {
 		},
 		{
 			"3 + 4 * 5 == 3 * 1 + 4 * 5",
-			"(3 + (4 * 5) == ((3 * 1) + (4 * 5)))",
+			"((3 + (4 * 5)) == ((3 * 1) + (4 * 5)))",
 		},
 		{
 			"true",
@@ -98,14 +97,23 @@ func TestOperatorPrecedenceParseing(t *testing.T) {
 		},
 		{
 			"a + add(b * c) + d",
-			"((a + add(b * c)) + d)",
-		},{
+			"((a + add((b * c))) + d)",
+		},
+		{
 			"add(a, b, 1, 2 * 3, 4 + 5, add(6, 7 * 8))",
-			"add(a, b, 1, (2, * 3), (4 + 5), add(6, (7 * 8)))",
+			"add(a, b, 1, (2 * 3), (4 + 5), add(6, (7 * 8)))",
 		},
 		{
 			"add(a + b + c * d / f + g)",
 			"add((((a + b) + ((c * d) / f)) + g))",
+		},
+		{
+			"a * [1, 2, 3, 4][b * c] * d",
+			"((a * ([1, 2, 3, 4][(b * c)]) * d)",
+		},
+		{
+			"add(a * b[2], b[1], 2 * [1, 2][1])",
+			"add((a * (b[2]), (b[1], (2 * ([1, 2][1]))",
 		},
 	}
 

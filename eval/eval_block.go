@@ -5,7 +5,6 @@ import (
 	"Shroom/object"
 )
 
-
 func evalBlockStatement(block *ast.BlockStatement, env *object.Environment) object.Object {
 	var result object.Object
 

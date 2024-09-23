@@ -13,7 +13,6 @@ func (parser *Parser) parseArrayLiteral() ast.Expression {
 	return array
 }
 
-
 func (parser *Parser) parseExpressionList(end token.TokenType) []ast.Expression {
 	list := []ast.Expression{}
 

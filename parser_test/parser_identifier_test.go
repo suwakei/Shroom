@@ -7,7 +7,6 @@ import (
 	"testing"
 )
 
-
 func TestIdentifierExpression(t *testing.T) {
 	input := `foobar;`
 
@@ -38,7 +37,6 @@ func TestIdentifierExpression(t *testing.T) {
 		t.Errorf("identifier.TokenLiteral not %s got=%s", "foobar", identifier.TokenLiteral())
 	}
 }
-
 
 func testIdentifier(t *testing.T, exp ast.Expression, value string) bool {
 	identifier, ok := exp.(*ast.Identifier)
