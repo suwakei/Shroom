@@ -94,6 +94,8 @@ func New(lex *lexer.Lexer) *Parser {
 
 	parser.registerInfix(token.LBRACKET, parser.parseIndexExpression)
 
+	parser.registerPrefix(token.LBRACE, parser.parseDictLiteral)
+
 	// 2つトークンを読み込んでcurrentTokenとpeekTokenの2つがセットされる
 	parser.nextToken()
 	parser.nextToken()
