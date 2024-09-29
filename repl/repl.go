@@ -9,7 +9,6 @@ import (
 	"bufio"
 	"fmt"
 	"io"
-	"os"
 )
 
 // 最初に現れる文字
@@ -28,12 +27,6 @@ func Start(in io.Reader, out io.Writer) {
 		}
 
 		line := scanner.Text()
-
-		// exitコマンドでreplの終了
-		if line == "exit()" {
-			fmt.Print("bye bye!")
-			os.Exit(0)
-		}
 		lex := lexer.New(line)
 		parser := parser.New(lex)
 

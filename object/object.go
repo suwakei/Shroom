@@ -17,6 +17,7 @@ const (
 	FUNCTION_OBJ     = "FUNCTION"
 	BUILTIN_OBJ      = "BUILTIN"
 	ARRAY_OBJ        = "ARRAY"
+	TYPE_OBJ = "TYPE"
 )
 
 type ObjectType string
@@ -70,6 +71,14 @@ type Error struct {
 
 func (e *Error) Type() ObjectType { return ERROR_OBJ }
 func (e *Error) Inspect() string  { return "ERROR: " + e.Message }
+
+
+type ObjType struct {
+	Value string
+}
+
+func (objt *ObjType) Type() ObjectType {return TYPE_OBJ}
+func (objt *ObjType) Inspect() string {return objt.Value}
 
 // function型
 type Function struct {
