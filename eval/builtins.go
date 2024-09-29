@@ -30,8 +30,7 @@ var builtins = map[string]*object.Builtin{
 
 	// 配列の最初の要素を取得
 	"first": &object.Builtin{
-		Fn:
-		func(args ...object.Object) object.Object {
+		Fn: func(args ...object.Object) object.Object {
 			if len(args) != 1 {
 				return newError("wrong number of arguments. got=%d, want=1", len(args))
 			}
@@ -50,8 +49,7 @@ var builtins = map[string]*object.Builtin{
 
 	// 配列の真ん中の要素を取得、偶数だったら要素番号の小さい方になる
 	"middle": &object.Builtin{
-		Fn:
-		func(args ...object.Object) object.Object {
+		Fn: func(args ...object.Object) object.Object {
 			if len(args) != 1 {
 				return newError("wrong number of arguments. got=%d, want=1", len(args))
 			}
@@ -61,13 +59,13 @@ var builtins = map[string]*object.Builtin{
 
 			arr := args[0].(*object.Array)
 			length := len(arr.Elements)
-			
-			if length > 0 && length % 2 == 0{
-				return arr.Elements[length / 2]
+
+			if length > 0 && length%2 == 0 {
+				return arr.Elements[length/2]
 			}
 
-			if length > 0 && length % 2 == 1{
-				return arr.Elements[length / 2]
+			if length > 0 && length%2 == 1 {
+				return arr.Elements[length/2]
 			}
 
 			return NULL
@@ -76,8 +74,7 @@ var builtins = map[string]*object.Builtin{
 
 	// 配列の最後の要素を取得
 	"last": &object.Builtin{
-		Fn:
-		func(args ...object.Object) object.Object {
+		Fn: func(args ...object.Object) object.Object {
 			if len(args) != 1 {
 				return newError("wrong number of arguments. got=%d, want=1", len(args))
 			}
@@ -88,7 +85,7 @@ var builtins = map[string]*object.Builtin{
 			arr := args[0].(*object.Array)
 			length := len(arr.Elements)
 			if length > 0 {
-				return arr.Elements[length - 1]
+				return arr.Elements[length-1]
 			}
 
 			return NULL
@@ -96,9 +93,8 @@ var builtins = map[string]*object.Builtin{
 	},
 
 	"type": &object.Builtin{
-		Fn:
-		func(args ...object.Object) object.Object {
-			
+		Fn: func(args ...object.Object) object.Object {
+
 			if len(args) != 1 {
 				return newError("wrong number of arguments. got=%d, want=1", len(args))
 			}
@@ -113,8 +109,7 @@ var builtins = map[string]*object.Builtin{
 	},
 
 	"rest": &object.Builtin{
-		Fn:
-		func (args ...object.Object) object.Object {
+		Fn: func(args ...object.Object) object.Object {
 			if len(args) != 1 {
 				return newError("wrong number of atguments. got=%d, want=1", len(args))
 			}
@@ -125,7 +120,7 @@ var builtins = map[string]*object.Builtin{
 			arr := args[0].(*object.Array)
 			length := len(arr.Elements)
 			if length > 0 {
-				newElements := make([]object.Object, length - 1, length - 1)
+				newElements := make([]object.Object, length-1, length-1)
 				copy(newElements, arr.Elements[1:length])
 				return &object.Array{Elements: newElements}
 			}
@@ -135,8 +130,7 @@ var builtins = map[string]*object.Builtin{
 	},
 
 	"append": &object.Builtin{
-		Fn:
-		func(args ...object.Object) object.Object {
+		Fn: func(args ...object.Object) object.Object {
 			if len(args) != 2 {
 				return newError("wrong number of atguments. got=%d, want=1", len(args))
 			}
@@ -148,17 +142,16 @@ var builtins = map[string]*object.Builtin{
 			arr := args[0].(*object.Array)
 			length := len(arr.Elements)
 
-			newElements := make([]object.Object, length + 1, length + 1)
+			newElements := make([]object.Object, length+1, length+1)
 			copy(newElements, arr.Elements)
 			newElements[length] = args[1]
 
 			return &object.Array{Elements: newElements}
 		},
 	},
-	
+
 	"exit": &object.Builtin{
-		Fn:
-		func(args ...object.Object) object.Object {
+		Fn: func(args ...object.Object) object.Object {
 			if len(args) == 0 {
 				os.Exit(0)
 			}

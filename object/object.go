@@ -17,7 +17,8 @@ const (
 	FUNCTION_OBJ     = "FUNCTION"
 	BUILTIN_OBJ      = "BUILTIN"
 	ARRAY_OBJ        = "ARRAY"
-	TYPE_OBJ = "TYPE"
+	DICT_OBJ         = "DICT"
+	TYPE_OBJ         = "TYPE"
 )
 
 type ObjectType string
@@ -72,13 +73,12 @@ type Error struct {
 func (e *Error) Type() ObjectType { return ERROR_OBJ }
 func (e *Error) Inspect() string  { return "ERROR: " + e.Message }
 
-
 type ObjType struct {
 	Value string
 }
 
-func (objt *ObjType) Type() ObjectType {return TYPE_OBJ}
-func (objt *ObjType) Inspect() string {return objt.Value}
+func (objt *ObjType) Type() ObjectType { return TYPE_OBJ }
+func (objt *ObjType) Inspect() string  { return objt.Value }
 
 // function型
 type Function struct {
@@ -117,13 +117,12 @@ type Builtin struct {
 func (b *Builtin) Type() ObjectType { return BUILTIN_OBJ }
 func (b *Builtin) Inspect() string  { return "builtin function" }
 
-
 // 配列型
 type Array struct {
 	Elements []Object
 }
 
-func (arr *Array) Type() ObjectType {return ARRAY_OBJ}
+func (arr *Array) Type() ObjectType { return ARRAY_OBJ }
 func (arr *Array) Inspect() string {
 	var out bytes.Buffer
 

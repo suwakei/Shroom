@@ -7,7 +7,6 @@ import (
 	"testing"
 )
 
-
 func TestParsingDictLiteralStringKeys(t *testing.T) {
 	input := `{"one": 1, "two": 2, "three": 3}`
 
@@ -26,9 +25,9 @@ func TestParsingDictLiteralStringKeys(t *testing.T) {
 		t.Errorf("dict.Pairs has wrong length. got=%d", len(dict.Pairs))
 	}
 
-	expected := map[string]int64 {
-		"one": 1,
-		"two": 2,
+	expected := map[string]int64{
+		"one":   1,
+		"two":   2,
 		"three": 3,
 	}
 
@@ -43,7 +42,6 @@ func TestParsingDictLiteralStringKeys(t *testing.T) {
 		testIntegerLiteral(t, value, expectedValue)
 	}
 }
-
 
 func TestParsingEmptyDictLiteral(t *testing.T) {
 	input := "{}"
@@ -64,7 +62,6 @@ func TestParsingEmptyDictLiteral(t *testing.T) {
 	}
 }
 
-
 func TestParsingDictLiteralsWithExpressions(t *testing.T) {
 	input := `{"one": 0 + 1, "two": 10 - 8, "three": 15 / 5}`
 
@@ -83,8 +80,7 @@ func TestParsingDictLiteralsWithExpressions(t *testing.T) {
 		t.Errorf("dict.Pairs has wrong length. got=%d", len(dict.Pairs))
 	}
 
-
-	tests := map[string]func(ast.Expression) {
+	tests := map[string]func(ast.Expression){
 		"one": func(e ast.Expression) {
 			testInfixExpression(t, e, 0, "+", 1)
 		},

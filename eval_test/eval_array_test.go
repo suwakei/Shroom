@@ -5,7 +5,6 @@ import (
 	"testing"
 )
 
-
 func TestArrayLiterals(t *testing.T) {
 	input := "[1, 2 * 2, 3 + 3]"
 

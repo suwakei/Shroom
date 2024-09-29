@@ -5,7 +5,6 @@ import (
 	"reflect"
 )
 
-
 func getType(value interface{}) *object.ObjType {
 	var target reflect.Type = reflect.TypeOf(value)
 
