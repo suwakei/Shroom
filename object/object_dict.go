@@ -50,6 +50,7 @@ type HashableDict interface {
 
 func (d *Dict) Type() ObjectType { return DICT_OBJ }
 
+
 func (d *Dict) Inspect() string {
 	var out bytes.Buffer
 
