@@ -10,6 +10,9 @@ func evalIndexExpression(left, index object.Object) object.Object {
 	case left.Type() == object.ARRAY_OBJ && index.Type() == object.INTEGER_OBJ:
 		return evalArrayIndexExpression(left, index)
 
+	case left.Type() == object.DICT_OBJ:
+		return evalDictIndexExpression(left, index)
+
 	default:
 		return newError("index operator not supported: %s", left.Type())
 	}
@@ -26,4 +29,21 @@ func evalArrayIndexExpression(array, index object.Object) object.Object {
 	}
 
 	return arrayObject.Elements[idx]
+}
+
+
+func evalDictIndexExpression(dict, index object.Object) object.Object {
+	dictObject := dict.(*object.Dict)
+
+	key, ok := index.(object.HashableDict)
+	if !ok {
+		return newError("unusable as dict key: %s", index.Type())
+	}
+
+	pair, ok := dictObject.Pairs[key.DictKey()]
+	if !ok {
+		return NULL
+	}
+
+	return pair.Value
 }

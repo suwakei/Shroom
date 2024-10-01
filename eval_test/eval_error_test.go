@@ -50,7 +50,7 @@ func TestErrorHandling(t *testing.T) {
 			"unknown operator: STRING - STRING",
 		},
 		{
-			`{"name"; "Shroom"}[fn(x) {x}];`,
+			`{"name": "Shroom"}[fn(x) {x}];`,
 			"unusable as dict key: FUNCTION",
 		},
 	}

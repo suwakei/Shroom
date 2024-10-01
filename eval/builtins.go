@@ -150,6 +150,16 @@ var builtins = map[string]*object.Builtin{
 		},
 	},
 
+	"println": &object.Builtin{
+		Fn: func(args ...object.Object) object.Object {
+			for _, arg := range args {
+				fmt.Println(arg.Inspect())
+			}
+
+			return NULL
+		},
+	},
+
 	"exit": &object.Builtin{
 		Fn: func(args ...object.Object) object.Object {
 			if len(args) == 0 {

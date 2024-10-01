@@ -50,6 +50,7 @@ const (
 	ELSE     = "ELSE"
 	FOR      = "FOR"
 	RETURN   = "RETURN"
+	PILEUS = "PILEUS"
 )
 
 // 予約語定義
@@ -64,6 +65,7 @@ var keywords = map[string]TokenType{
 	"else":   ELSE,
 	"for":    FOR,
 	"return": RETURN,
+	"pileus": PILEUS,
 }
 
 // 予約語かどうか判定
