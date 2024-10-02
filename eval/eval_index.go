@@ -31,7 +31,6 @@ func evalArrayIndexExpression(array, index object.Object) object.Object {
 	return arrayObject.Elements[idx]
 }
 
-
 func evalDictIndexExpression(dict, index object.Object) object.Object {
 	dictObject := dict.(*object.Dict)
 

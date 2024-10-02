@@ -5,7 +5,6 @@ import (
 	"Shroom/object"
 )
 
-
 func evalDictLiteral(node *ast.DictLiteral, env *object.Environment) object.Object {
 	pairs := make(map[object.DictKey]object.DictPair)
 

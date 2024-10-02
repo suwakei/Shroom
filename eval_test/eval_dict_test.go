@@ -6,7 +6,6 @@ import (
 	"testing"
 )
 
-
 func TestDictLiterals(t *testing.T) {
 	input := `let two = "two";
 	{
@@ -21,16 +20,16 @@ func TestDictLiterals(t *testing.T) {
 	evaluated := testEval(input)
 	result, ok := evaluated.(*object.Dict)
 	if !ok {
-		t.Fatalf("Eval didn't return Dict. got=%T (%+v)", evaluated, evaluated) 
+		t.Fatalf("Eval didn't return Dict. got=%T (%+v)", evaluated, evaluated)
 	}
 
 	expected := map[object.DictKey]int64{
-		(&object.String{Value: "one"}).DictKey(): 1,
-		(&object.String{Value: "two"}).DictKey(): 2,
+		(&object.String{Value: "one"}).DictKey():   1,
+		(&object.String{Value: "two"}).DictKey():   2,
 		(&object.String{Value: "three"}).DictKey(): 3,
-		(&object.Integer{Value: 4}).DictKey(): 4,
-		eval.TRUE.DictKey(): 5,
-		eval.FALSE.DictKey(): 6,
+		(&object.Integer{Value: 4}).DictKey():      4,
+		eval.TRUE.DictKey():                        5,
+		eval.FALSE.DictKey():                       6,
 	}
 
 	if len(result.Pairs) != len(expected) {
@@ -47,10 +46,9 @@ func TestDictLiterals(t *testing.T) {
 	}
 }
 
-
 func TestDictIndexExpression(t *testing.T) {
-	tests := []struct{
-		input string
+	tests := []struct {
+		input    string
 		expected interface{}
 	}{
 		{

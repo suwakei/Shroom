@@ -50,7 +50,7 @@ const (
 	ELSE     = "ELSE"
 	FOR      = "FOR"
 	RETURN   = "RETURN"
-	PILEUS = "PILEUS"
+	PILEUS   = "PILEUS"
 )
 
 // 予約語定義
