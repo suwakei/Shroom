@@ -1,0 +1,9 @@
+name: Shroom
+
+on: [push]
+
+jobs:
+    echos:
+        runs-on: ubuntu-latest
+        steps:
+            - run: echo "hello"
