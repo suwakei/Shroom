@@ -49,6 +49,10 @@ func TestErrorHandling(t *testing.T) {
 			`"Hello" - "World"`,
 			"unknown operator: STRING - STRING",
 		},
+		{
+			`{"name": "Shroom"}[fn(x) {x}];`,
+			"unusable as dict key: FUNCTION",
+		},
 	}
 
 	for _, tt := range tests {

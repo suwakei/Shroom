@@ -28,7 +28,7 @@ func testLiteralExpression(
 ) bool {
 	switch v := expected.(type) {
 	case int:
-		
+
 		return testIntegerLiteral(t, exp, int64(v))
 	case int64:
 		return testIntegerLiteral(t, exp, v)

@@ -5,7 +5,6 @@ import (
 	"Shroom/token"
 )
 
-
 func (parser *Parser) parseDictLiteral() ast.Expression {
 	dict := &ast.DictLiteral{Token: parser.currentToken}
 	dict.Pairs = make(map[ast.Expression]ast.Expression)
@@ -25,7 +24,7 @@ func (parser *Parser) parseDictLiteral() ast.Expression {
 
 		if !parser.peekTokenIs(token.RBRACE) && !parser.expectPeek(token.COMMA) {
 			return nil
-		} 
+		}
 	}
 
 	if !parser.expectPeek(token.RBRACE) {

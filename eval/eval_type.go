@@ -5,7 +5,6 @@ import (
 	"reflect"
 )
 
-
 func getType(value interface{}) *object.ObjType {
 	var target reflect.Type = reflect.TypeOf(value)
 
@@ -27,6 +26,10 @@ func getType(value interface{}) *object.ObjType {
 
 	if target.String() == "*object.Function" {
 		return &object.ObjType{Value: "function"}
+	}
+
+	if target.String() == "*object.Null" {
+		return &object.ObjType{Value: "null"}
 	}
 
 	return &object.ObjType{Value: target.String()}
