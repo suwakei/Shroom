@@ -40,10 +40,6 @@ func Start(in io.Reader, out io.Writer) {
 		if evaluated != nil {
 			io.WriteString(out, evaluated.Inspect())
 			io.WriteString(out, "\n")
-		} else {
-			// 入力したコマンドが正しいとき表示されるが少し邪魔なのでとりあえずコメントアウトする。
-			// io.WriteString(out, program.String())
-			// io.WriteString(out, "\n")
 		}
 
 		for tok := lex.NextToken(); tok.Type != token.EOF; tok = lex.NextToken() {

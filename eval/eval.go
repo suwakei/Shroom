@@ -186,16 +186,18 @@ func evalBangOperatorExpression(right object.Object) object.Object {
 	}
 }
 
-func evalStatements(stmts []ast.Statement, env *object.Environment) object.Object {
-	var result object.Object
+// ↓ unused
 
-	for _, statement := range stmts {
-		result = Eval(statement, env)
+// func evalStatements(stmts []ast.Statement, env *object.Environment) object.Object {
+// 	var result object.Object
 
-		if returnValue, ok := result.(*object.ReturnValue); ok {
-			return returnValue.Value
-		}
-	}
+// 	for _, statement := range stmts {
+// 		result = Eval(statement, env)
 
-	return result
-}
+// 		if returnValue, ok := result.(*object.ReturnValue); ok {
+// 			return returnValue.Value
+// 		}
+// 	}
+
+// 	return result
+// }
